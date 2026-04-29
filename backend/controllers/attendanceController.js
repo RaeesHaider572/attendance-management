@@ -6,7 +6,6 @@ const checkIn = async (req, res) => {
         const today = new Date().toISOString().split('T')[0];
         const now = new Date();
         
-        // Check if already checked in today
         const [existing] = await db.execute(
             'SELECT * FROM attendance WHERE user_id = ? AND date = ?',
             [userId, today]
