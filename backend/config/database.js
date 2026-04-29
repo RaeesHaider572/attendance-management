@@ -1,15 +1,11 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'attendance_db',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
+// Use Railway's MySQL URL
+const connectionString = process.env.MYSQL_URL || 
+                        process.env.DATABASE_URL || 
+                        `mysql://${process.env.MYSQLUSER}:${process.env.MYSQLPASSWORD}@${process.env.MYSQLHOST}:${process.env.MYSQLPORT}/${process.env.MYSQLDATABASE}`;
 
-const promisePool = pool.promise();
-module.exports = promisePool;
+const pool = mysql.createPool(connectionString).promise();
+
+module.exports = pool;
